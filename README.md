@@ -1,38 +1,45 @@
-Role Name
-=========
+# Ansible Role: Vector
 
-A brief description of the role goes here.
 
-Requirements
-------------
+## Description
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Deploy Vector using ansible.  
+[Vector is a lightweight and ultra-fast tool for building observability pipelines](https://vector.dev/) .
 
-Role Variables
---------------
+> **! Notice**  
+This role does not guarantee the correct work. This is the result of the solution of home work at the DevOPS course and an example of using ANSIBLE roles for automatic deployment of services using the example of the Vector service installation.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Requirements
 
-Dependencies
-------------
+This version of the role requires debian 12
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Role Variables
 
-Example Playbook
-----------------
+| Variables name | Default value      | Description |
+|----------------|--------------------|-------------|
+| vector_version        | "0.49.0-1"  | версия      |
+| vector_input_type     | "file"      | тип input   |
+| vector_input_include  |             | список input  |
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Dependencies
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Not found
 
-License
--------
+## Example Playbook
+```yaml
+- name: Install Vector
+  hosts: vector
+  tags: 
+    - vector
+  become: true
+  roles:
+    - role: vector
+```
+## License
 
-BSD
+MIT
 
-Author Information
-------------------
+## Author Information
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Dmitrii Osipov  
+dimosspb@vk.ru
