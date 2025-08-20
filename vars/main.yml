@@ -1,2 +1,8 @@
 ---
 # vars file for roles/vector
+pakage_type: "deb"
+
+role_author: "Dmitrii Osipov"
+role_descripyion: "My homeworks"
+role_company: ""
+role_license: "MIT"

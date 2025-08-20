@@ -1,2 +1,32 @@
 ---
 # tasks file for roles/vector
+- name: Download and install Vector
+  block:
+    - name: Download Vector package
+      become: true
+      ansible.builtin.get_url:
+        url: "https://apt.vector.dev/pool/v/ve/vector_{{ vector_version }}_amd64.{{ pakage_type }}"
+        dest: "/tmp/vector-{{ vector_version }}.{{ pakage_type }}"
+        mode: '0644'
+    - name: Install vector packages manually
+      become: true
+      ansible.builtin.apt:
+        deb: /tmp/vector-{{ vector_version }}.{{ pakage_type }}
+        state: present
+      when: pakage_type == 'deb'
+      notify: Restart vector service
+
+    - name: Vector config from template
+      become: true
+      ansible.builtin.template:
+        src: ./templates/vector.yaml.j2
+        dest: /etc/vector/vector.yaml
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart vector service
+
+  rescue:
+    - name: Log error in Vector install
+      ansible.builtin.debug:
+        msg: "Произошла ошибка - vector"
