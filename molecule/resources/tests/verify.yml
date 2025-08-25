@@ -1,0 +1,47 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    vector_packages:
+      - "vector"
+    vector_service: "vector.service"
+    vector_user: "root"
+    vector_group: "root"
+    vector_config_path: "/etc/vector"
+    vector_config_files:
+      - "{{ vector_config_path }}/vector.yaml"
+
+  tasks:
+    - name: "Gather Installed Packages"
+      ansible.builtin.package_facts:
+        manager: auto
+      become: true
+
+    - name: "Gather Vector Config Files Stats"
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ vector_config_files }}"
+      become: true
+      register: ch_config_files
+
+    - name: "Assert Vector Config Files Stats"
+      ansible.builtin.assert:
+        that:
+          - "'{{ vector_user }}' == '{{ item.stat.pw_name }}'"
+          - "'{{ vector_group }}' == '{{ item.stat.gr_name }}'"
+          - "'text/xml' == '{{ item.stat.mimetype }}'"
+          - "'0644' == '{{ item.stat.mode }}'"
+          - "{{ item.stat.exists }}"
+      loop: "{{ ch_config_files.results }}"
+
+    - name: "Gather Local Services"
+      ansible.builtin.service_facts:
+      become: true
+
+    - name: "Assert Vector Service"
+      ansible.builtin.assert:
+        that:
+          - "'{{ vector_service }}' in ansible_facts.services"
+          - "'running' == ansible_facts.services[vector_service].state"
+          - "'enabled' == ansible_facts.services[vector_service].status"

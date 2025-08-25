@@ -1,0 +1,74 @@
+---
+driver:
+  name: docker
+
+platforms:
+  # - name: ubuntu
+  #   image: ubuntu:latest
+  #   dockerfile: ../resources/Dockerfile.j2
+  #   command: /sbin/init
+  #   privileged: true
+  #   capabilities:
+  #     - SYS_ADMIN
+  #   tmpfs:
+  #     - /run
+  #     - /tmp
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup
+  #   env:
+  #     ANSIBLE_USER: ansible
+  #     SUDO_GROUP: sudo
+  #     DEPLOY_GROUP: deployer
+  #     container: docker
+
+  # - name: debian
+  #   image: debian:latest
+  #   dockerfile: ../resources/Dockerfile.j2
+  #   command: /sbin/init
+  #   privileged: true
+  #   capabilities:
+  #     - SYS_ADMIN
+  #   tmpfs:
+  #     - /run
+  #     - /tmp
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup
+  #   env:
+  #     ANSIBLE_USER: ansible
+  #     SUDO_GROUP: sudo
+  #     DEPLOY_GROUP: deployer
+  #     container: docker
+
+  - name: oracle
+    image: oraclelinux:8
+    dockerfile: ../resources/Dockerfile.j2
+    command: /sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    env:
+      ANSIBLE_USER: ansible
+      SUDO_GROUP: sudo
+      DEPLOY_GROUP: deployer
+      container: docker
+
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      role_name_check: false
+
+verifier:
+  name: ansible
+  playbooks:
+    verify: ../resources/tests/verify.yml
+
+lint: |
+  # set -e
+  yamllint .
+  ansible-lint --skip-list role-name

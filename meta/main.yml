@@ -1,7 +1,10 @@
 galaxy_info:
+  role_name: vector
+  namespace: local
   author: "{{ role_author }}"
-  description: "{{ role_descripyion}}"
-  company: "{{  role_company }}"
+  description: "{{ role_description }}"
+  min_ansible_version: "2.9"
+  company: "{{ role_company }}"
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
@@ -16,8 +19,6 @@ galaxy_info:
   # - CC-BY-4.0
   license: "{{ role_license }}"
 
-  min_ansible_version: "2.1"
-
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
 
@@ -28,10 +29,10 @@ galaxy_info:
   # https://galaxy.ansible.com/api/v1/platforms/
   #
   platforms:
-  - name: Debian
-    versions:
-    - bookworm
-    - bullseye
+    - name: Debian
+      versions:
+        - bookworm
+        - bullseye
   # - name: SomePlatform
   #   versions:
   #   - all
